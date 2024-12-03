@@ -1,7 +1,7 @@
 #!/bin/bash
 REPOSITORY=/home/ubuntu/
 
-cd $REPOSITORY/do_it_django
+cd $REPOSITORY/last_doit
 
 echo "> 🔵 Stop & Remove docker services."
 sudo docker-compose down
