@@ -49,6 +49,9 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "blog",
+    "single_pages",
+    "news",
 ]
 
 MIDDLEWARE = [
@@ -59,7 +62,13 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
+    'allauth.account.middleware.AccountMiddleware',
+]
+
+## account 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 SITE_ID = 1
@@ -67,25 +76,26 @@ SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 LOGIN_URL = 'accounts/login/'
+LOGIN_REDIRECT_URL ='/blog/'
 
-ROOT_URLCONF = "last_doit.urls"
-
-DATABASES = {
-    "default": {
-        "ENGINE":os.environ.get('POSTGRES_ENGINE','django.db.backends.sqlite3'),
-        "NAME": os.environ.get('POSTGRES_DB',BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get('POSTGRES_USER','user'),
-        "PASSWORD": os.environ.get('POSTGRES_PASSWORD','password'),
-        "HOST": os.environ.get('POSTGRES_HOST','localhost'),
-        "PORT": os.environ.get('POSTGRES_PORT','5432'),
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+            "secret": os.getenv("GOOGLE_SECRET_KEY"),
+            "key": ""
+        },
+            "SCOPE": [
+            "profile",
+            "email",
+        ],
+            "AUTH_PARAMS": {
+            "access_type": "online",
+        }
     }
 }
 
-## account 
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+ROOT_URLCONF = "last_doit.urls"
 
 TEMPLATES = [
     {
@@ -111,8 +121,12 @@ WSGI_APPLICATION = "last_doit.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "ENGINE":os.environ.get('POSTGRES_ENGINE','django.db.backends.sqlite3'),
+        "NAME": os.environ.get('POSTGRES_DB',BASE_DIR / "db.sqlite3"),
+        "USER": os.environ.get('POSTGRES_USER','user'),
+        "PASSWORD": os.environ.get('POSTGRES_PASSWORD','password'),
+        "HOST": os.environ.get('POSTGRES_HOST','localhost'),
+        "PORT": os.environ.get('POSTGRES_PORT','5432'),
     }
 }
 
